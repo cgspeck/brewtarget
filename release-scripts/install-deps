@@ -6,9 +6,10 @@ __install_osx() {
 }
 
 __install_ubuntu() {
-  sudo apt-get install \
-    curl \
-    jq
+  # These pacakges are preinstalled on Travis CI
+  # sudo apt-get install \
+  #   curl \
+  #   jq
 }
 
 case "$OSTYPE" in
