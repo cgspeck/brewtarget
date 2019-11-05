@@ -1,12 +1,9 @@
 language: c++
 os: osx
-before_install:
-  - export PATH=/usr/local/opt/qt5/bin:$PATH
-  - brew update
-install:
-  - brew install qt5
-before_script:
-  - mkdir build
-  - cd build
-  - cmake ..
-script: make && (CTEST_OUTPUT_ON_FAILURE=TRUE make test)
+jobs:
+  include:
+  - stage: Create draft Github Release
+    script: "./release-scripts/create-draft-release.sh"
+env:
+  global:
+    secure: rXF4tliOXuL3NYl590ijI3brA3TZNWLPozXJFlcfFCxLHq0IhNgA606xpnqmtHmDowHYXCvTqlzuJAuH7GhcUglTEUDnZb8F4uUPKT5frcGeWl+s4I9L8GAzY42PTmSRSLpz/thF8rRa7KdtT1G0jKHD33vEfDQsyQHqKgUlmTXASntpvDTCuYXWZ4M8Dn57E2FVolKbK3f9zLr+1uMXICNW9Kfatzo8MOqv6uz2F1RlwPJbhqiDAX3zlKnXJ63RjfPrLNQqg6qkTKosBoLiSTlfwW//ThEHgny5Q/U5YbqvaCxZJNps2mgw5rAp8+PpmAbfSZYGcrTfnDuv5rTi9012Ey5LQ2mxCAXEH16hxWoqF3adEmF4tIKLIbDu7BN5q+qNxVNes/y5sRvUsYDXfcOPYq3YJVTczHHU/duyAqeMqBNjraQBF1e+YUBX7m1b/Irszr81pE51R8/fYARttbQiWh2F3FP4/xhz8dDL9tSdtosdIKIkbnJCAsBn4VdlP1Q9gKWgloOg1+gePtd83KPZbnBBIWwZOkkkUV9S+Z3KKzhbpT+YaeYAKLNBA+aoBl7CDQO+Xvc9hvTAPf6z9DWAGr6+pt0sGW8dQoY0V6NEDxnKOahyul5P2p4Ih3FfG889Dm++KpkmVaGgAcQa6uBeeG+C4ngXPF//SyNr7Kg=

@@ -1,0 +1,26 @@
+#! /bin/bash -e
+__install_osx() {
+  brew install \
+    curl \
+    wget
+}
+
+__install_ubuntu() {
+  sudo apt-get install \
+    curl \
+    wget
+}
+
+case "$OSTYPE" in
+  darwin*)
+    echo "Setting up OSX (Homebrew) environment"
+    __install_osx
+  ;;
+  linux*)
+    echo "Setting up Ubuntu environment"
+    __install_ubuntu
+  ;;
+  *)
+    echo "unknown: $OSTYPE"
+  ;;
+esac
