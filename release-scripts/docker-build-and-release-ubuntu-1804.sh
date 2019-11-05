@@ -1,4 +1,5 @@
 #! /bin/bash -e
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source $DIR/common-vars
 
@@ -24,24 +25,28 @@ for target in ${TARGETS[*]}; do
   ls packages/
   echo -e "\nPushing new docker images"
   docker push cgspeck/brewtarget-build:$tag
-  docker tag brewtarget-build:$tag brewtarget-build:$expanded_tag
+  docker tag cgspeck/brewtarget-build:$tag cgspeck/brewtarget-build:$expanded_tag
   docker push cgspeck/brewtarget-build:$expanded_tag
 done
 
 echo -e "\nDownloading github-releases tool"
-github_release_path=$(mktemp -d)/github-release
-wget "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2" -O $github_release_path
+tmp_dir=$(mktemp -d)
+github_release_archive=$tmp_dir/github-release.tar.bz2
+github_release_path=$tmp_dir/bin/linux/amd64/github-release
+wget "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2" -O $github_release_archive
+tar xvjf $github_release_archive -C $tmp_dir
 chmod +x $github_release_path
 echo -e "\nUploading binaries to Github"
 
 for target in ${TARGETS[*]}; do
   for package in ${PACKAGES[*]}; do
-    src="packages/$target_$package"
+    src="./packages/${target}_${package}"
     echo -e "\nUploading ${src}"
     $github_release_path upload \
       --user cgspeck \
       --repo brewtarget \
       --tag $TAG_NAME \
-      --file $src
+      --file $src \
+      --name "${target}_${package}"
   done
 done
