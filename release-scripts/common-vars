@@ -1,5 +1,4 @@
 #! /bin/bash -e
-
 if [[ -z "${TRAVIS_BUILD_NUMBER}" ]]; then
     TAG_NAME="v2.4.0-0(unknown)"
 else
