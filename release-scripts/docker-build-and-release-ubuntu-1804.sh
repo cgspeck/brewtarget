@@ -12,14 +12,20 @@ fi
 
 for target in ${TARGETS[*]}; do
   tag="${target}"
+  expanded_tag="${tag}-${SHORT_HASH}"
   set +e
   docker pull cgspeck/brewtarget-build:$tag
   set -e
-  docker build -t $tag -f Dockerfile-$target .
+  docker build -t cgspeck/brewtarget-build:$tag -f Dockerfile-$target .
   for package in ${PACKAGES[*]}; do
     docker run --rm --entrypoint cat $tag $BUILD_PATH/$package > packages/$target_$package
   done
-  docker push cgspeck/brewtarget-build:$tag
+  echo -e "\nPackages:"
+  ls packages/
+  echo "\nPushing new docker images"
+  docker push brewtarget-build:$tag
+  docker tag brewtarget-build:$tag brewtarget-build:$expanded_tag
+  docker push brewtarget-build:$expanded_tag
 done
 
 # TODO: upload packages to GitHub!

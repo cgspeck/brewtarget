@@ -7,3 +7,4 @@ else
 fi
 
 TARGET_COMMITISH=$(git rev-parse HEAD)
+SHORT_HASH=$(git rev-parse --short HEAD)
