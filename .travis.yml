@@ -1,5 +1,8 @@
 language: c++
-os: osx
+dist: bionic
+os: linux
+services:
+  - docker
 jobs:
   include:
   - stage: Create draft Github Release

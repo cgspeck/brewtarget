@@ -1,14 +1,12 @@
 #! /bin/bash -e
 __install_osx() {
   HOMEBREW_NO_AUTO_UPDATE=1 brew install \
-    curl \
-    wget
+    curl
 }
 
 __install_ubuntu() {
   sudo apt-get install \
-    curl \
-    wget
+    curl
 }
 
 case "$OSTYPE" in
