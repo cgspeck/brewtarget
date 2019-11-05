@@ -7,6 +7,7 @@ __install_osx() {
 
 __install_ubuntu() {
   # These pacakges are preinstalled on Travis CI: curl, jq
+  echo "Nothing to do!"
 }
 
 case "$OSTYPE" in
