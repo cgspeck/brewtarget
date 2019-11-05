@@ -18,14 +18,30 @@ for target in ${TARGETS[*]}; do
   set -e
   docker build -t cgspeck/brewtarget-build:$tag -f Dockerfile-$target .
   for package in ${PACKAGES[*]}; do
-    docker run --rm --entrypoint cat $tag $BUILD_PATH/$package > packages/$target_$package
+    docker run --rm --entrypoint cat cgspeck/brewtarget-build:$tag $BUILD_PATH/$package > "packages/${target}_${package}"
   done
   echo -e "\nPackages:"
   ls packages/
-  echo "\nPushing new docker images"
-  docker push brewtarget-build:$tag
+  echo -e "\nPushing new docker images"
+  docker push cgspeck/brewtarget-build:$tag
   docker tag brewtarget-build:$tag brewtarget-build:$expanded_tag
-  docker push brewtarget-build:$expanded_tag
+  docker push cgspeck/brewtarget-build:$expanded_tag
 done
 
-# TODO: upload packages to GitHub!
+echo -e "\nDownloading github-releases tool"
+github_release_path=$(mktemp -d)/github-release
+wget "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2" -O $github_release_path
+chmod +x $github_release_path
+echo -e "\nUploading binaries to Github"
+
+for target in ${TARGETS[*]}; do
+  for package in ${PACKAGES[*]}; do
+    src="packages/$target_$package"
+    echo -e "\nUploading ${src}"
+    $github_release_path upload \
+      --user cgspeck \
+      --repo brewtarget \
+      --tag $TAG_NAME \
+      --file $src
+  done
+done
