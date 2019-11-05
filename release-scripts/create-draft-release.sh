@@ -1,6 +1,8 @@
 #! /bin/bash -e
-./install-deps
-source ./common-vars
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+$DIR/install-deps
+source $DIR/common-vars
 
 endpoint="https://api.github.com/repos/cgspeck/brewtarget/releases"
 payload=$(cat <<EOF
