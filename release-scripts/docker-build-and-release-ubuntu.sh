@@ -27,26 +27,29 @@ for package in ${PACKAGES[*]}; do
 done
 echo -e "\nPackages:"
 ls packages/
-echo -e "\nPushing new docker images"
-docker push cgspeck/brewtarget-build:$tag
 
-echo -e "\nDownloading github-releases tool"
-tmp_dir=$(mktemp -d)
-github_release_archive=$tmp_dir/github-release.tar.bz2
-github_release_path=$tmp_dir/bin/linux/amd64/github-release
-wget "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2" -O $github_release_archive
-tar xvjf $github_release_archive -C $tmp_dir
-chmod +x $github_release_path
-echo -e "\nUploading binaries to Github"
+if [[ "$TRAVIS" == "true" ]]; then
+  echo -e "\nPushing new docker images"
+  docker push cgspeck/brewtarget-build:$tag
+
+  echo -e "\nDownloading github-releases tool"
+  tmp_dir=$(mktemp -d)
+  github_release_archive=$tmp_dir/github-release.tar.bz2
+  github_release_path=$tmp_dir/bin/linux/amd64/github-release
+  wget "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2" -O $github_release_archive
+  tar xvjf $github_release_archive -C $tmp_dir
+  chmod +x $github_release_path
+  echo -e "\nUploading binaries to Github"
 
 
-for package in ${PACKAGES[*]}; do
-  src="./packages/${TARGET}_${package}"
-  echo -e "\nUploading ${src}"
-  $github_release_path upload \
-    --user cgspeck \
-    --repo brewtarget \
-    --tag $TAG_NAME \
-    --file $src \
-    --name "${TARGET}_${package}"
-done
+  for package in ${PACKAGES[*]}; do
+    src="./packages/${TARGET}_${package}"
+    echo -e "\nUploading ${src}"
+    $github_release_path upload \
+      --user cgspeck \
+      --repo brewtarget \
+      --tag $TAG_NAME \
+      --file $src \
+      --name "${TARGET}_${package}"
+  done
+fi
