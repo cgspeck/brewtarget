@@ -1,0 +1,19 @@
+FROM ubuntu:19.04
+ENV TZ=Australia/Melbourne
+WORKDIR /app
+
+RUN pacman -Sy && pacman -S -y --noconfirm --needed \
+    cmake \
+    base-devel \
+    qt5-multimedia \
+    qt5-svg \
+    qt5-tools \
+    qt5-webkit
+
+ADD ./ /app/brewtarget
+ADD ./docker/arch /app/arch
+RUN useradd -m abc
+RUN echo 'abc ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+RUN chown -R abc:abc /app
+USER abc
+RUN /app/arch/build.sh
