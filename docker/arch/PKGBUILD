@@ -18,8 +18,7 @@ source=("git+file:///app/brewtarget")
 md5sums=('SKIP')
 
 pkgver() {
-  cd /app/brewtarget
-  git describe --long | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+  sed 's/-/./' < /app/arch/VERSION
 }
 
 build() {
