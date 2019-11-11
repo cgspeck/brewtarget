@@ -1,4 +1,4 @@
-#! /bin/bash -ex
+#! /bin/bash -e
 
 if [[ "$#" -ne 1 ]]; then
   echo "Please supply target, e.g. 'ubuntu1804' or 'ubuntu1904'"
