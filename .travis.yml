@@ -13,9 +13,11 @@ jobs:
     script: ./release-scripts/docker-build-and-release-ubuntu.sh ubuntu1904
   - name: Build for Archlinux
     script: ./release-scripts/docker-build-and-release-archlinux.sh
+
   - stage: Create draft Github Release
     name: Create a draft Github Release
     script: ./release-scripts/create-draft-release.sh
+
   - stage: Push Binaries
     name: Push Ubuntu 18.04 binaries
     script: ./release-scripts/push-ubuntu-binaries.sh ubuntu1804
@@ -23,9 +25,11 @@ jobs:
     script: ./release-scripts/push-ubuntu-binaries.sh ubuntu1904
   - name: Push Archlinux Binaries
     script: ./release-scripts/push-archlinux-binaries.sh
+
   - stage: Finalize Github Release
     name: Finalize  Github Release
     script: ./release-scripts/finalize-draft-release.sh
+
   - stage: Build GuacGUI Image
     name: Build GuacGUI Image
     script: ./release-scripts/docker-build-and-release-guacgui.sh

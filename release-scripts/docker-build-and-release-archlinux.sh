@@ -1,4 +1,4 @@
-#! /bin/bash -e
+#! /bin/bash -ex
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source $DIR/common-vars
@@ -9,8 +9,8 @@ PACKAGE="brewtarget-devel-${ARCH_VERSION}-1-x86_64.pkg.tar.xz"
 BUILD_DATE="dev"
 
 if [[ "$TRAVIS" == "true" ]]; then
-  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   BUILD_DATE=$(date -u +%s)
+  echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 fi
 
 echo "Building for ${TARGET}"
