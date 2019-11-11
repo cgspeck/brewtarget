@@ -4,8 +4,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source $DIR/common-vars
 
 TARGET="arch"
-BUILD_PATH=/app/arch/
-PACKAGES=("brewtarget_2.4.0_x86_64.deb" "brewtarget_2.4.0_x86_64.rpm" "brewtarget_2.4.0_x86_64.tar.bz2")
+BUILD_PATH=/app/arch
+PACKAGES=("brewtarget-devel-${ARCH_VER}-1-x86_64.pkg.tar.xz")
 BUILD_DATE="dev"
 
 if [[ "$TRAVIS" == "true" ]]; then
@@ -22,7 +22,7 @@ docker build \
   -t cgspeck/brewtarget-build:$tag \
   -f Dockerfile-$TARGET \
   --build-arg BUILD_DATE \
-  --build-arg VERSION=$TAG_NAME \
+  --build-arg VERSION=$ARCH_VER \
   .
 for package in ${PACKAGES[*]}; do
   docker run --rm --entrypoint cat cgspeck/brewtarget-build:$tag $BUILD_PATH/$package > "packages/${TARGET}_${package}"

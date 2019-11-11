@@ -1,7 +1,7 @@
 # Based on [brewtarget-git](https://aur.archlinux.org/packages/brewtarget-git/)
 
 _pkgname=brewtarget
-pkgname=brewtarget-git
+pkgname=brewtarget-devel
 pkgver=2.3.1.r422.g596acfc
 pkgrel=1
 pkgdesc="Beer calculator compatible with BeerSmith. Generates instructions from the recipe and interactive mash designer."
@@ -11,14 +11,14 @@ license=('GPL3' 'custom:WTFPL-2')
 depends=('qt5-tools' 'qt5-multimedia' 'qt5-webkit' 'qt5-svg')
 optdepends=()
 makedepends=('cmake' 'git')
-conflicts=(brewtarget)
+conflicts=(brewtarget brewtarget-git)
 provides=(brewtarget)
 backup=()
 source=("git+file:///app/brewtarget")
 md5sums=('SKIP')
 
 pkgver() {
-  sed 's/-/./' < /app/arch/VERSION
+  cat /app/arch/VERSION
 }
 
 build() {

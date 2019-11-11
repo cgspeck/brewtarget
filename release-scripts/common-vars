@@ -1,9 +1,14 @@
 #! /bin/bash -e
+MAJ_VER="2"
+MIN_VER="4"
+PATCH_VER="0"
+
 if [[ -z "${TRAVIS_BUILD_NUMBER}" ]]; then
-    TAG_NAME="v2.4.0-0(unknown)"
-else
-    TAG_NAME="v2.4.0-${TRAVIS_BUILD_NUMBER}"
+  TRAVIS_BUILD_NUMBER="1"
 fi
 
+TAG_NAME="v${MAJ_VER}.${MIN_VER}.${PATCH_VER}-${TRAVIS_BUILD_NUMBER}"
 TARGET_COMMITISH=$(git rev-parse HEAD)
 SHORT_HASH=$(git rev-parse --short HEAD)
+
+ARCH_VER="$MAJ_VER.$MIN_VER.$PATCH_VER.r${TRAVIS_BUILD_NUMBER}.${SHORT_HASH}"
