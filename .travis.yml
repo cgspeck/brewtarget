@@ -14,6 +14,8 @@ jobs:
     script: ./release-scripts/docker-build-and-release-ubuntu.sh ubuntu1804
   - name: Build for Ubuntu 19.04
     script: ./release-scripts/docker-build-and-release-ubuntu.sh ubuntu1904
+  - name: Build for Archlinux
+    script: ./release-scripts/docker-build-and-release-archlinux.sh
   - stage: Finalize Github Release
     name: Finalize  Github Release
     script: ./release-scripts/finalize-draft-release.sh
