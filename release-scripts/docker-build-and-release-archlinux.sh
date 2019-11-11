@@ -15,11 +15,8 @@ fi
 
 echo "Building for ${TARGET}"
 
-tag="${TARGET}"
-expanded_tag="${tag}-${SHORT_HASH}"
-
 docker build \
-  -t cgspeck/brewtarget-build:$tag \
+  -t cgspeck/brewtarget-build:$TARGET \
   -f Dockerfile-$TARGET \
   --build-arg BUILD_DATE \
   --build-arg VERSION=$ARCH_VERSION \
@@ -28,8 +25,9 @@ docker build \
 # TODO: only push if on develop
 if [[ "$TRAVIS" == "true" ]]; then
   IMG_NAME="cgspeck/brewtarget-build:${TARGET}-${TRAVIS_BUILD_NUMBER}"
-  echo -e "\nPushing new docker images"
-  docker push cgspeck/brewtarget-build:$tag
-  docker tag cgspeck/brewtarget-build:$tag $IMG_NAME
+  echo -e "\nPushing new docker image: cgspeck/brewtarget-build:$TARGET"
+  docker push cgspeck/brewtarget-build:$TARGET
+  echo -e "\nPushing new docker image: $IMG_NAME"
+  docker tag cgspeck/brewtarget-build:$TARGET $IMG_NAME
   docker push $IMG_NAME
 fi

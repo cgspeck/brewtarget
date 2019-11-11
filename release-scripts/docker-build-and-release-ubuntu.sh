@@ -24,8 +24,9 @@ docker build \
 # TODO: only push on develop
 if [[ "$TRAVIS" == "true" ]]; then
   IMG_NAME="cgspeck/brewtarget-build:${TARGET}-${TRAVIS_BUILD_NUMBER}"
-  echo -e "\nPushing new docker images"
+  echo -e "\nPushing new docker image: cgspeck/brewtarget-build:$TARGET"
   docker push cgspeck/brewtarget-build:$TARGET
-  docker tag cgspeck/brewtarget-build:$tag $IMG_NAME
+  echo -e "\nPushing new docker image: $IMG_NAME"
+  docker tag cgspeck/brewtarget-build:$TARGET $IMG_NAME
   docker push $IMG_NAME
 fi
