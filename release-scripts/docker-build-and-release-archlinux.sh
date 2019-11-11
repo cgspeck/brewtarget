@@ -5,7 +5,7 @@ source $DIR/common-vars
 
 TARGET="arch"
 BUILD_PATH=/app/arch
-PACKAGES=("brewtarget-devel-${ARCH_VER}-1-x86_64.pkg.tar.xz")
+PACKAGE="brewtarget-devel-${ARCH_VERSION}-1-x86_64.pkg.tar.xz"
 BUILD_DATE="dev"
 
 if [[ "$TRAVIS" == "true" ]]; then
@@ -22,11 +22,11 @@ docker build \
   -t cgspeck/brewtarget-build:$tag \
   -f Dockerfile-$TARGET \
   --build-arg BUILD_DATE \
-  --build-arg VERSION=$ARCH_VER \
+  --build-arg VERSION=$ARCH_VERSION \
   .
-for package in ${PACKAGES[*]}; do
-  docker run --rm --entrypoint cat cgspeck/brewtarget-build:$tag $BUILD_PATH/$package > "packages/${TARGET}_${package}"
-done
+
+docker run --rm --entrypoint cat cgspeck/brewtarget-build:$tag $BUILD_PATH/$PACKAGE > "packages/${TARGET}_${PACKAGE}"
+
 echo -e "\nPackages:"
 ls packages/
 
@@ -44,14 +44,13 @@ if [[ "$TRAVIS" == "true" ]]; then
   echo -e "\nUploading binaries to Github"
 
 
-  for package in ${PACKAGES[*]}; do
-    src="./packages/${TARGET}_${package}"
-    echo -e "\nUploading ${src}"
-    $github_release_path upload \
-      --user cgspeck \
-      --repo brewtarget \
-      --tag $TAG_NAME \
-      --file $src \
-      --name "${TARGET}_${package}"
-  done
+
+  src="./packages/${TARGET}_${PACKAGE}"
+  echo -e "\nUploading ${src}"
+  $github_release_path upload \
+    --user cgspeck \
+    --repo brewtarget \
+    --tag $TAG_NAME \
+    --file $src \
+    --name "${TARGET}_${package}"
 fi

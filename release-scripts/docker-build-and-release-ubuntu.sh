@@ -1,4 +1,4 @@
-#! /bin/bash -e
+#! /bin/bash -ex
 
 if [[ "$#" -ne 1 ]]; then
   echo "Please supply target, e.g. 'ubuntu1804' or 'ubuntu1904'"
@@ -9,8 +9,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source $DIR/common-vars
 
 TARGET="${1}"
+package_dest_name_str="${TARGET}_VERSION"
+package_dest_name="${!package_dest_name_str}"
+
 BUILD_PATH=/app/build
-PACKAGES=("brewtarget_2.4.0_x86_64.deb" "brewtarget_2.4.0_x86_64.rpm" "brewtarget_2.4.0_x86_64.tar.bz2")
+PACKAGE="brewtarget_2.4.0_x86_64.deb"
 
 if [[ "$TRAVIS" == "true" ]]; then
   echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -18,19 +21,17 @@ fi
 
 echo "Building for ${TARGET}"
 
-tag="${TARGET}"
-expanded_tag="${tag}-${SHORT_HASH}"
+docker build -t cgspeck/brewtarget-build:$TARGET -f Dockerfile-$TARGET .
 
-docker build -t cgspeck/brewtarget-build:$tag -f Dockerfile-$TARGET .
-for package in ${PACKAGES[*]}; do
-  docker run --rm --entrypoint cat cgspeck/brewtarget-build:$tag $BUILD_PATH/$package > "packages/${TARGET}_${package}"
-done
-echo -e "\nPackages:"
+echo -e "\n\nCopying ${BUILD_PATH}/${package_dest_name}"
+docker run --rm --entrypoint cat cgspeck/brewtarget-build:$TARGET $BUILD_PATH/$PACKAGE > "packages/${package_dest_name}"
+
+echo -e "\n\nPackages:"
 ls packages/
 
 if [[ "$TRAVIS" == "true" ]]; then
   echo -e "\nPushing new docker images"
-  docker push cgspeck/brewtarget-build:$tag
+  docker push cgspeck/brewtarget-build:$TARGET
 
   echo -e "\nDownloading github-releases tool"
   tmp_dir=$(mktemp -d)
@@ -42,14 +43,12 @@ if [[ "$TRAVIS" == "true" ]]; then
   echo -e "\nUploading binaries to Github"
 
 
-  for package in ${PACKAGES[*]}; do
-    src="./packages/${TARGET}_${package}"
-    echo -e "\nUploading ${src}"
-    $github_release_path upload \
-      --user cgspeck \
-      --repo brewtarget \
-      --tag $TAG_NAME \
-      --file $src \
-      --name "${TARGET}_${package}"
-  done
+  src="./packages/${package_dest_name}"
+  echo -e "\nUploading ${src}"
+  $github_release_path upload \
+    --user cgspeck \
+    --repo brewtarget \
+    --tag $TAG_NAME \
+    --file $src \
+    --name "${package_dest_name}"
 fi
