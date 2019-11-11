@@ -17,18 +17,25 @@ jobs:
   - stage: Create draft Github Release
     name: Create a draft Github Release
     script: ./release-scripts/create-draft-release.sh
+    if: branch = develop
 
   - stage: Push Binaries
     name: Push Ubuntu 18.04 binaries
     script: ./release-scripts/push-ubuntu-binaries.sh ubuntu1804
+    if: branch = develop
+
   - name: Push Ubuntu 19.04 binaries
     script: ./release-scripts/push-ubuntu-binaries.sh ubuntu1904
+    if: branch = develop
+
   - name: Push Archlinux Binaries
     script: ./release-scripts/push-archlinux-binaries.sh
+    if: branch = develop
 
   - stage: Finalize Github Release
     name: Finalize  Github Release
     script: ./release-scripts/finalize-draft-release.sh
+    if: branch = develop
 
   - stage: Build GuacGUI Image
     name: Build GuacGUI Image

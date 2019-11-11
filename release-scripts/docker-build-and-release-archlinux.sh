@@ -22,12 +22,13 @@ docker build \
   --build-arg VERSION=$ARCH_VERSION \
   .
 
-# TODO: only push if on develop
-if [[ "$TRAVIS" == "true" ]]; then
-  IMG_NAME="cgspeck/brewtarget-build:${TARGET}-${TRAVIS_BUILD_NUMBER}"
+IMG_NAME="cgspeck/brewtarget-build:${TARGET}-${TRAVIS_BUILD_NUMBER}"
+echo "Creating Docker Tag: ${IMG_NAME}"
+docker tag cgspeck/brewtarget-build:$TARGET $IMG_NAME
+
+if [[ "$TRAVIS" == "true" && "$BRANCH" == "develop" ]]; then
   echo -e "\nPushing new docker image: cgspeck/brewtarget-build:$TARGET"
   docker push cgspeck/brewtarget-build:$TARGET
   echo -e "\nPushing new docker image: $IMG_NAME"
-  docker tag cgspeck/brewtarget-build:$TARGET $IMG_NAME
   docker push $IMG_NAME
 fi
