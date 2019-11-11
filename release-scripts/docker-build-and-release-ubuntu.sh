@@ -9,11 +9,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source $DIR/common-vars
 
 TARGET="${1}"
-package_dest_name_str="${TARGET}_VERSION"
-package_dest_name="${!package_dest_name_str}"
-
-BUILD_PATH=/app/build
-PACKAGE="brewtarget_2.4.0_x86_64.deb"
 
 if [[ "$TRAVIS" == "true" ]]; then
   echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -21,34 +16,16 @@ fi
 
 echo "Building for ${TARGET}"
 
-docker build -t cgspeck/brewtarget-build:$TARGET -f Dockerfile-$TARGET .
+docker build \
+  -t cgspeck/brewtarget-build:$TARGET \
+  -f Dockerfile-$TARGET \
+  .
 
-echo -e "\n\nCopying ${BUILD_PATH}/${package_dest_name}"
-docker run --rm --entrypoint cat cgspeck/brewtarget-build:$TARGET $BUILD_PATH/$PACKAGE > "packages/${package_dest_name}"
-
-echo -e "\n\nPackages:"
-ls packages/
-
+# TODO: only push on develop
 if [[ "$TRAVIS" == "true" ]]; then
+  IMG_NAME="cgspeck/brewtarget-build:${TARGET}-${TRAVIS_BUILD_NUMBER}"
   echo -e "\nPushing new docker images"
   docker push cgspeck/brewtarget-build:$TARGET
-
-  echo -e "\nDownloading github-releases tool"
-  tmp_dir=$(mktemp -d)
-  github_release_archive=$tmp_dir/github-release.tar.bz2
-  github_release_path=$tmp_dir/bin/linux/amd64/github-release
-  wget "https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2" -O $github_release_archive
-  tar xvjf $github_release_archive -C $tmp_dir
-  chmod +x $github_release_path
-  echo -e "\nUploading binaries to Github"
-
-
-  src="./packages/${package_dest_name}"
-  echo -e "\nUploading ${src}"
-  $github_release_path upload \
-    --user cgspeck \
-    --repo brewtarget \
-    --tag $TAG_NAME \
-    --file $src \
-    --name "${package_dest_name}"
+  docker tag cgspeck/brewtarget-build:$tag $IMG_NAME
+  docker push $IMG_NAME
 fi
