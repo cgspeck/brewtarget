@@ -29,13 +29,11 @@ jobs:
       script: ./release-scripts/push-ubuntu-binaries.sh ubuntu1804
       if: branch = develop
 
-    - stage: Push Binaries
-      name: Push Ubuntu 19.10 binaries
+    - name: Push Ubuntu 19.10 binaries
       script: ./release-scripts/push-ubuntu-binaries.sh ubuntu1910
       if: branch = develop
 
-    - stage: Push Binaries
-      name: Push Ubuntu 20.04 binaries
+    - name: Push Ubuntu 20.04 binaries
       script: ./release-scripts/push-ubuntu-binaries.sh ubuntu2004
       if: branch = develop
 
