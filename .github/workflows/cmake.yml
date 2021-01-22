@@ -43,3 +43,10 @@ jobs:
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       # run: ${Qt5_DIR}\mingw49_32\Tools\mingw492_32\bin\mingw32-make.exe
       run: cmake --build . #--config $BUILD_TYPE
+
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-results
+        path: build
+
