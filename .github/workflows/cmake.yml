@@ -43,7 +43,7 @@ jobs:
         shell: bash
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         # run: ${Qt5_DIR}\mingw49_32\Tools\mingw492_32\bin\mingw32-make.exe
-        run: make
+        run: make package
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
