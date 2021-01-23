@@ -24,7 +24,7 @@ jobs:
           version: 5.15.2
 
       - name: Discover QT paths
-        run: "dir /s %Qt5_DIR%"
+        run: "dir /s $Qt5_Dir"
 
       # - name: Create Build Environment
       #   # Some projects don't allow in-source building, so create a separate build directory
