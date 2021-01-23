@@ -36,14 +36,24 @@ jobs:
         # Note the current convention is to use the -S and -B options here to specify source
         # and build directories, but this is only available with CMake 3.13 and higher.
         # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-        run: cmake -G "MinGW Makefiles" -DDO_RELEASE_BUILD=ON  -DCMAKE_PREFIX_PATH=$Qt5_Dir $GITHUB_WORKSPACE
+        run: |
+          cmake
+            -G "MinGW Makefiles" `
+            -DDO_RELEASE_BUILD=ON `
+            -DCMAKE_PREFIX_PATH=$Qt5_Dir `
+            $GITHUB_WORKSPACE
+
+      - name: Prepare Compiler Environment
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: |
+          cp "C:/ProgramData/chocolatey/bin/libgcc_s_dw2-1.dll" ${Qt5_DIR}
 
       - name: Build
         working-directory: ${{github.workspace}}/build
         shell: bash
-        # Execute the build.  You can specify a specific target with "--target <NAME>"
-        # run: ${Qt5_DIR}\mingw49_32\Tools\mingw492_32\bin\mingw32-make.exe
-        run: make package
+        run: |
+          make package
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
