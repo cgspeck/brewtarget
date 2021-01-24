@@ -43,30 +43,11 @@ jobs:
             -DCMAKE_PREFIX_PATH=$Qt5_Dir \
             $GITHUB_WORKSPACE
 
-      - name: Search for missing dll
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: |
-          find / -iname 'libgcc_s_dw2*'
-
-      - name: Discover QT Environment
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: |
-          find $Qt5_Dir
-
-
-      - name: Prepare Compiler Environment
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: |
-          cp "C:/ProgramData/chocolatey/bin/libgcc_s_dw2-1.dll" $Qt5_Dir
-
       - name: Build
         working-directory: ${{github.workspace}}/build
         shell: bash
         run: |
-          make package
+          make
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
