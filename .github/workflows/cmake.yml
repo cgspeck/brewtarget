@@ -47,7 +47,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         shell: bash
         run: |
-          cp "C:/ProgramData/chocolatey/bin/libgcc_s_dw2-1.dll" ${Qt5_DIR}
+          cp "C:/ProgramData/chocolatey/bin/libgcc_s_dw2-1.dll" $Qt5_Dir
 
       - name: Build
         working-directory: ${{github.workspace}}/build
