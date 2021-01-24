@@ -43,6 +43,13 @@ jobs:
             -DCMAKE_PREFIX_PATH=$Qt5_Dir \
             $GITHUB_WORKSPACE
 
+      - name: Discover QT Environment
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: |
+          dir /s $Qt5_Dir
+
+
       - name: Prepare Compiler Environment
         working-directory: ${{github.workspace}}/build
         shell: bash
