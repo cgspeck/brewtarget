@@ -47,7 +47,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         shell: bash
         run: |
-          dir /s $Qt5_Dir
+          find $Qt5_Dir
 
 
       - name: Prepare Compiler Environment
