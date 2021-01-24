@@ -37,10 +37,10 @@ jobs:
         # and build directories, but this is only available with CMake 3.13 and higher.
         # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
         run: |
-          cmake
-            -G "MinGW Makefiles" `
-            -DDO_RELEASE_BUILD=ON `
-            -DCMAKE_PREFIX_PATH=$Qt5_Dir `
+          cmake \
+            -G "MinGW Makefiles" \
+            -DDO_RELEASE_BUILD=ON \
+            -DCMAKE_PREFIX_PATH=$Qt5_Dir \
             $GITHUB_WORKSPACE
 
       - name: Prepare Compiler Environment
