@@ -89,16 +89,3 @@ index ae762052..2467d127 100644
     ${EndIF}
     ${If} ${FileExists} "$btPath\$fileName"
        ; this copies the database.xml or database.sqlite file to the new location.
-diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index e994c5b6..ced2f819 100644
---- a/src/CMakeLists.txt
-+++ b/src/CMakeLists.txt
-@@ -373,7 +373,7 @@ SET(brewtarget_ICON "")
- 
- IF( WIN32 AND MINGW )
-   ADD_CUSTOM_COMMAND(OUTPUT ${WINDIR}/icon.o
--                     COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR}
-+                     COMMAND {CMAKE_RC_COMPILER} -I${CMAKE_CURRENT_SOURCE_DIR}
-                      -i${RCFILE}
-                      -o${WINDIR}/icon.o
-                      DEPENDS ${RCFILE}
