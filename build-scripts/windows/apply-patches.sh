@@ -1,4 +1,4 @@
-#! /bin/bash -ex
+#! /bin/bash -e
 SRC_PATH=$1
 PATCH="${SRC_PATH}\build-scripts\windows\patches\001-omit-missing-libs-for-packager.patch"
 
