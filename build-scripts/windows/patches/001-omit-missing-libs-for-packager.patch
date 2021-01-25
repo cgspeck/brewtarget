@@ -1,0 +1,104 @@
+From cf5503d02bbaef820d884b12e1611d2e8a842308 Mon Sep 17 00:00:00 2001
+From: Artsiom Martynau <xzfantom@gmail.com>
+Date: Sat, 16 Jan 2021 17:46:11 +0300
+Subject: [PATCH] Some changes for mxe to work
+
+https://github.com/Brewtarget/brewtarget/commit/cf5503d02bbaef820d884b12e1611d2e8a842308.patch
+
+---
+ CMakeLists.txt                 |  6 ++---
+ cmake/modules/NSIS.template.in | 43 +++++++++++++++++-----------------
+ src/CMakeLists.txt             |  2 +-
+ 3 files changed, 26 insertions(+), 25 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0f5ebf72..2e4fa3f6 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -462,9 +462,9 @@ IF( WIN32 )
+         SET( Qt_DLLs
+              ${Qt_DLLs}
+              ${IcuDlls}
+-             ${MINGW_BIN_DIR}/libgcc_s_dw2-1.dll
+-             ${MINGW_BIN_DIR}/libstdc++-6.dll
+-             ${MINGW_BIN_DIR}/libwinpthread-1.dll
++            # ${MINGW_BIN_DIR}/libgcc_s_dw2-1.dll
++            # ${MINGW_BIN_DIR}/libstdc++-6.dll
++            # ${MINGW_BIN_DIR}/libwinpthread-1.dll
+         )
+      ENDIF()
+    ENDIF()
+diff --git a/cmake/modules/NSIS.template.in b/cmake/modules/NSIS.template.in
+index ae762052..2467d127 100644
+--- a/cmake/modules/NSIS.template.in
++++ b/cmake/modules/NSIS.template.in
+@@ -798,7 +798,7 @@ Var nouse1
+ Var nouse2
+ Var btRegPath
+ 
+-!include "Locate.nsh"
++; !include "Locate.nsh"
+ 
+ ; Set up the browser page. This happens post install, so I'm confused about
+ ; what's already on disk and isn't.
+@@ -922,26 +922,27 @@ Function btCopyAllFiles
+       Pop $btPathVersion
+       ; If there is no data file where the user pointed us,
+       ; look for in LOCALAPPDATA
+-      ${IfNot} ${FileExists} "$btPath\$fileName"
+-         ${locate::Open} "$LOCALAPPDATA" "/M=$fileName" $locateHandle
+-         findloop:
+-         ${locate::Find} $locateHandle $R9 $R8 $R7 $R6 $nouse1 $nouse2
+-         StrCmp $R9 '' stoplocate
+-         Call whereisDb
+-         StrCmp $0 'StopLocate' stoplocate findloop
+-         stoplocate:
+-         ${locate::Close} $locateHandle
+-         ${locate::Unload}
+-         ${If} $R4 != ""
+-            StrCpy $btPath $R4
+-
+-         ; If we can't find anything, warn the user and send them back to the
+-         ; selection screen
+-         ${Else}
+-            MessageBox mb_iconstop "Could not find an existing database ($fileName) in $btPath"
+-            Abort
+-         ${EndIf}
+-      ${EndIf}
++      ; Plugin locate is not good at work in mxe, temporary switching it off
++      ;${IfNot} ${FileExists} "$btPath\$fileName"
++      ;   ${locate::Open} "$LOCALAPPDATA" "/M=$fileName" $locateHandle
++      ;   findloop:
++      ;   ${locate::Find} $locateHandle $R9 $R8 $R7 $R6 $nouse1 $nouse2
++      ;   StrCmp $R9 '' stoplocate
++      ;   Call whereisDb
++      ;   StrCmp $0 'StopLocate' stoplocate findloop
++      ;   stoplocate:
++      ;   ${locate::Close} $locateHandle
++      ;   ${locate::Unload}
++      ;   ${If} $R4 != ""
++      ;      StrCpy $btPath $R4
++
++      ;   ; If we can't find anything, warn the user and send them back to the
++      ;   ; selection screen
++      ;   ${Else}
++      ;      MessageBox mb_iconstop "Could not find an existing database ($fileName) in $btPath"
++      ;      Abort
++      ;   ${EndIf}
++      ;${EndIf}
+    ${EndIF}
+    ${If} ${FileExists} "$btPath\$fileName"
+       ; this copies the database.xml or database.sqlite file to the new location.
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index e994c5b6..ced2f819 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -373,7 +373,7 @@ SET(brewtarget_ICON "")
+ 
+ IF( WIN32 AND MINGW )
+   ADD_CUSTOM_COMMAND(OUTPUT ${WINDIR}/icon.o
+-                     COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR}
++                     COMMAND {CMAKE_RC_COMPILER} -I${CMAKE_CURRENT_SOURCE_DIR}
+                      -i${RCFILE}
+                      -o${WINDIR}/icon.o
+                      DEPENDS ${RCFILE}
