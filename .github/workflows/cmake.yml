@@ -52,7 +52,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         shell: bash
         run: |
-          make
+          make package
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
