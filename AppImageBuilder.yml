@@ -2,11 +2,11 @@ version: 1
 AppDir:
   path: build/AppDir
   app_info:
-    id: appimage-demo-qt5
-    name: AppImage Demo Qt5
-    icon: appimage-demo-qt5
+    id: brewtarget
+    name: Brewtarget
+    icon: brewtarget
     version: latest
-    exec: usr/bin/appimage-demo-qt5
+    exec: usr/local/bin/brewtarget
     exec_args: $@
   apt:
     arch: amd64
@@ -94,11 +94,11 @@ AppDir:
       - plasma-integration
   files:
     exclude:
-      - usr/share/man
-      - usr/share/doc/*/README.*
-      - usr/share/doc/*/changelog.*
-      - usr/share/doc/*/NEWS.*
-      - usr/share/doc/*/TODO.*
+      - usr/local/share/man
+      - usr/local/share/doc/*/README.*
+      - usr/local/share/doc/*/changelog.*
+      - usr/local/share/doc/*/NEWS.*
+      - usr/local/share/doc/*/TODO.*
   test:
     fedora:
       image: appimagecrafters/tests-env:fedora-30
