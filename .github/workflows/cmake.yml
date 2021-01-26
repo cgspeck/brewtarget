@@ -68,8 +68,15 @@ jobs:
         run: |
           make package
 
-      - name: Archive build artifacts
-        if: ${{ always() }}
+      - name: Archive the installer
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Brewtarget Windows Installer
+          path: build/brewtarget_*.exe
+
+      - name: Recover the debris
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: build-results
