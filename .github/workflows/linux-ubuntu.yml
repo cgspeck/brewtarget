@@ -42,18 +42,23 @@ jobs:
       # resume here when I get the time:
       # https://appimage-builder.readthedocs.io/en/latest/hosted-services/github-actions.html
       - name: Install App
-        run: make install DESTDIR=AppDir
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: |
+          make install DESTDIR=AppDir
 
       - name: Build AppImage
+        working-directory: ${{github.workspace}}/build
         uses: AppImageCrafters/build-appimage-action@master
         env:
           UPDATE_INFO: gh-releases-zsync|AppImageCrafters|qt-hello-world|latest|*x86_64.AppImage.zsync
         with:
-          recipe: build-scripts\linux\AppImageBuilder.yml
+          recipe: ${{github.workspace}}/build-scripts/linux/AppImageBuilder.yml
 
       - uses: actions/upload-artifact@v2
         with:
           name: AppImage
+          path: build/AppImage
 
       - name: Recover Debris Artifacts
         if: ${{ failure() }}
