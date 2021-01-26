@@ -54,12 +54,12 @@ jobs:
 
 
       - name: Hacks to make AppImage Builder Happy
-        working-directory: ${{github.workspace}}/build
+        working-directory: ${{github.workspace}}
         shell: bash
         run: |
           mkdir -p AppDir/share/icons/hicolor/256x256/apps
-          cp AppDir/usr/local/share/icons/hicolor/scalable/apps/brewtarget.svg \
-            AppDir/share/icons/hicolor/256x256/apps
+          cp build-scripts/linux/resources/brewtarget.png \
+            build/AppDir/share/icons/hicolor/256x256/apps
 
 
       - name: Build AppImage
