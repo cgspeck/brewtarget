@@ -20,7 +20,6 @@ AppDir:
         key_url: "https://archive.neon.kde.org/public.key"
     include:
       - libc6
-      - libgcc-s1
       - libgcc1
       - libphonon4
       - libqt5core5a
