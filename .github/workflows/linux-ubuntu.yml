@@ -71,8 +71,8 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: AppImage
-          path: AppImage
+          name: brewtarget-appImage
+          path: Brewtarget-latest-x86_64.AppImage
 
       - name: Recover Debris Artifacts
         if: ${{ failure() }}
