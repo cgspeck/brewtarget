@@ -1,6 +1,6 @@
 #! /bin/bash -e
 SRC_PATH=$1
-PATCH="${SRC_PATH}\build-scripts\windows\patches\001-auto-discover-install-dependencies.patch"
+PATCH="${SRC_PATH}/build-scripts/linux/patches/001-auto-discover-install-dependencies.patch"
 
 echo -e "\nApplying patches\n"
 
