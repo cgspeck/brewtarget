@@ -11,23 +11,3 @@ index 0f5ebf72..e15e08da 100644
               ${MINGW_BIN_DIR}/libstdc++-6.dll
               ${MINGW_BIN_DIR}/libwinpthread-1.dll
          )
-diff --git a/build-scripts/windows/patches/001-omit-missing-libs-for-packager.patch b/build-scripts/windows/patches/001-omit-missing-libs-for-packager.patch
-index 679acfd9..e69de29b 100644
---- a/build-scripts/windows/patches/001-omit-missing-libs-for-packager.patch
-+++ b/build-scripts/windows/patches/001-omit-missing-libs-for-packager.patch
-@@ -1,14 +0,0 @@
--diff --git a/CMakeLists.txt b/CMakeLists.txt
--index 0f5ebf72..e15e08da 100644
----- a/CMakeLists.txt
--+++ b/CMakeLists.txt
--@@ -462,7 +462,7 @@
-- IF( WIN32 )
--         SET( Qt_DLLs
--              ${Qt_DLLs}
--              ${IcuDlls}
---             ${MINGW_BIN_DIR}/libgcc_s_dw2-1.dll
--+             ${MINGW_BIN_DIR}/libgcc_s_seh-1.dll
--              ${MINGW_BIN_DIR}/libstdc++-6.dll
--              ${MINGW_BIN_DIR}/libwinpthread-1.dll
--         )
-\ No newline at end of file
