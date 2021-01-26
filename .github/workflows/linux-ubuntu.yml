@@ -31,12 +31,29 @@ jobs:
         run: |
           make package
 
-      - name: Upload Brewtarget Executable
+      - name: Upload Brewtarget Installers
         if: ${{ success() }}
         uses: actions/upload-artifact@v2
         with:
-          name: brewtarget
+          name: brewtarget-linux-installers
           path: build/brewtarget*
+
+      # create an AppImage
+      # resume here when I get the time:
+      # https://appimage-builder.readthedocs.io/en/latest/hosted-services/github-actions.html
+      - name: Install App
+        run: make install DESTDIR=AppDir
+
+      - name: Build AppImage
+        uses: AppImageCrafters/build-appimage-action@master
+        env:
+          UPDATE_INFO: gh-releases-zsync|AppImageCrafters|qt-hello-world|latest|*x86_64.AppImage.zsync
+        with:
+          recipe: build-scripts\linux\AppImageBuilder.yml
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: AppImage
 
       - name: Recover Debris Artifacts
         if: ${{ failure() }}
