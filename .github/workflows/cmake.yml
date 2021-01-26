@@ -24,6 +24,12 @@ jobs:
           cp \
             build-scripts/windows/vendor/NSISlog/plugin/nsislog.dll \
             "C:/Program Files (x86)/NSIS/Plugins/x86-ansi"
+          cp \
+            build-scripts/windows/vendor/NSISLocate/Plugin/locate.dll \
+            "C:/Program Files (x86)/NSIS/Plugins/x86-ansi"
+          cp \
+            build-scripts/windows/vendor/NSISLocate/Include/Locate.nsh \
+            "C:/Program Files (x86)/NSIS/Include"
 
       - name: Apply Patches
         shell: bash
