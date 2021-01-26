@@ -69,7 +69,8 @@ jobs:
         with:
           recipe: AppImageBuilder.yml
 
-      - uses: actions/upload-artifact@v2
+      - name: Upload Brewtarget AppImage
+        uses: actions/upload-artifact@v2
         with:
           name: brewtarget-appImage
           path: Brewtarget-latest-x86_64.AppImage
