@@ -31,8 +31,15 @@ jobs:
         run: |
           make package
 
-      - name: Upload Build Artifacts
-        if: ${{ always() }}
+      - name: Upload Brewtarget Executable
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: brewtarget
+          path: build/brewtarget*
+
+      - name: Recover Debris Artifacts
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: build-results
