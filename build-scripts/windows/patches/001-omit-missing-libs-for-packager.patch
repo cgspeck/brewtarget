@@ -1,30 +1,14 @@
-From cf5503d02bbaef820d884b12e1611d2e8a842308 Mon Sep 17 00:00:00 2001
-From: Artsiom Martynau <xzfantom@gmail.com>
-Date: Sat, 16 Jan 2021 17:46:11 +0300
-Subject: [PATCH] Some changes for mxe to work
-
-https://github.com/Brewtarget/brewtarget/commit/cf5503d02bbaef820d884b12e1611d2e8a842308.patch
-
----
- CMakeLists.txt                 |  6 ++---
- cmake/modules/NSIS.template.in | 43 +++++++++++++++++-----------------
- src/CMakeLists.txt             |  2 +-
- 3 files changed, 26 insertions(+), 25 deletions(-)
-
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 0f5ebf72..2e4fa3f6 100644
+index 0f5ebf72..e15e08da 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -462,9 +462,9 @@ IF( WIN32 )
+@@ -462,7 +462,7 @@
+ IF( WIN32 )
          SET( Qt_DLLs
               ${Qt_DLLs}
               ${IcuDlls}
 -             ${MINGW_BIN_DIR}/libgcc_s_dw2-1.dll
--             ${MINGW_BIN_DIR}/libstdc++-6.dll
--             ${MINGW_BIN_DIR}/libwinpthread-1.dll
-+            # ${MINGW_BIN_DIR}/libgcc_s_dw2-1.dll
-+            # ${MINGW_BIN_DIR}/libstdc++-6.dll
-+            # ${MINGW_BIN_DIR}/libwinpthread-1.dll
++             ${MINGW_BIN_DIR}/libgcc_s_seh-1.dll
+              ${MINGW_BIN_DIR}/libstdc++-6.dll
+              ${MINGW_BIN_DIR}/libwinpthread-1.dll
          )
-      ENDIF()
-    ENDIF()
