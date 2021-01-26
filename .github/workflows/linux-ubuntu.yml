@@ -80,3 +80,4 @@ jobs:
         with:
           name: build-results
           path: build
+          retention-days: 2
