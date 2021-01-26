@@ -67,7 +67,7 @@ jobs:
         env:
           UPDATE_INFO: gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
         with:
-          recipe: AppImageBuilder.yml
+          recipe: build-scripts/linux/AppImageBuilder.yml
 
       - name: Upload Brewtarget AppImage
         uses: actions/upload-artifact@v2
