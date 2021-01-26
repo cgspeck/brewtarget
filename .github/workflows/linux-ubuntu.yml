@@ -57,9 +57,9 @@ jobs:
         working-directory: ${{github.workspace}}
         shell: bash
         run: |
-          mkdir -p build/AppDir/share/icons/hicolor/256x256/apps
+          mkdir -p build/AppDir/usr/share/icons/hicolor/256x256/apps
           cp build-scripts/linux/resources/brewtarget.png \
-            build/AppDir/share/icons/hicolor/256x256/apps
+            build/AppDir/usr/share/icons/hicolor/256x256/apps
 
 
       - name: Build AppImage
