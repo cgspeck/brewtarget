@@ -80,6 +80,8 @@ jobs:
       - name: Call AppImage Builder
         working-directory: ${{github.workspace}}
         shell: bash
+        env:
+          UPDATE_INFO: gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
         run: |
           appimage-builder \
             --recipe=build-scripts/linux/AppImageBuilder.yml \
