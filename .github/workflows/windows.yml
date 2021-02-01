@@ -36,6 +36,7 @@ jobs:
         working-directory: ${{github.workspace}}
         run: ./build-scripts/windows/apply-patches.sh $GITHUB_WORKSPACE
 
+      # QT Mirrorlist: https://download.qt.io/static/mirrorlist/
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
