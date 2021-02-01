@@ -21,6 +21,8 @@ AppDir:
     include:
       - libbz2-1.0
       - libc6
+      - libcanberra-gtk-module
+      - libcanberra-gtk3-module
       - libexpat1
       - libfam0
       - libgcc1
