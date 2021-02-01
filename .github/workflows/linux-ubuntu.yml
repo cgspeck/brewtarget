@@ -27,6 +27,7 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           version: 5.14.2
+          extra: '--timeout 60'
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/build
