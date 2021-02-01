@@ -9,6 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Manually Install AppImage Builder
+        working-directory: ${{github.workspace}}
+        shell: bash
+        run: |
+          sudo apt install -y python3-pip python3-setuptools patchelf desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace
+          sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
+          sudo chmod +x /usr/local/bin/appimagetool
+          sudo pip3 install appimage-builder
+
       - name: Apply Patches
         shell: bash
         working-directory: ${{github.workspace}}
@@ -61,12 +70,20 @@ jobs:
             build/AppDir/usr/share/icons/hicolor/256x256/apps
 
 
-      - name: Build AppImage
-        uses: AppImageCrafters/build-appimage-action@master
-        env:
-          UPDATE_INFO: gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
-        with:
-          recipe: build-scripts/linux/AppImageBuilder.yml
+      # - name: Build AppImage
+      #   uses: AppImageCrafters/build-appimage-action@master
+      #   env:
+      #     UPDATE_INFO: gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
+      #   with:
+      #     recipe: build-scripts/linux/AppImageBuilder.yml
+
+      - name: Call AppImage Builder
+        working-directory: ${{github.workspace}}
+        shell: bash
+        run: |
+          appimage-builder \
+            --recipe=build-scripts/linux/AppImageBuilder.yml \
+            --skip-test
 
       - name: Upload Brewtarget AppImage
         uses: actions/upload-artifact@v2
