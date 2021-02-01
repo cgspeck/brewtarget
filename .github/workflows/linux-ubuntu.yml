@@ -38,7 +38,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: |
           cmake \
-            -DDO_RELEASE_BUILD=ON \
+            -DDO_RELEASE_BUILD=OFF \
             $GITHUB_WORKSPACE
 
       - name: Build
