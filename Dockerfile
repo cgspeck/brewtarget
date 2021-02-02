@@ -41,7 +41,24 @@ ENV Qt5_DIR=/app/Qt/$QT_VERSION/gcc_64
 ENV QT_PLUGIN_PATH=/app/Qt/$QT_VERSION/gcc_64/plugins
 ENV QML2_IMPORT_PATH=/app/Qt/$QT_VERSION/gcc_64/qml
 
-ADD ./ /app/brewtarget
+# ADD ./ /app/brewtarget
+RUN mkdir -p /app/brewtarget
+ADD ./brewtarget.desktop /app/brewtarget
+ADD ./brewtarget.qrc /app/brewtarget
+ADD ./CHANGES.markdown /app/brewtarget
+ADD ./cmake /app/brewtarget/cmake
+ADD ./CMakeLists.txt /app/brewtarget
+ADD ./COPYRIGHT /app/brewtarget
+ADD ./css /app/brewtarget/css
+ADD ./data /app/brewtarget/data
+ADD ./doc /app/brewtarget/doc
+ADD ./images /app/brewtarget/images
+ADD ./mac /app/brewtarget/mac
+ADD ./README.markdown /app/brewtarget
+ADD ./src /app/brewtarget/src
+ADD ./translations /app/brewtarget/translations
+ADD ./ui /app/brewtarget/ui
+ADD ./win /app/brewtarget/win
 
 RUN mkdir -p /app/build
 WORKDIR /app/build
@@ -49,10 +66,13 @@ WORKDIR /app/build
 RUN cmake \
     /app/brewtarget \
     -DCMAKE_PREFIX_PATH=/app/Qt/$QT_VERSION/gcc_64 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
     && make package
 
 ENV APPDIR=/app/build/AppDir
 ## install the app & apply app image hacks
+RUN mkdir -p /app/brewtarget/build-scripts/linux/resources/
+ADD ./build-scripts/linux/resources/brewtarget.png /app/brewtarget/build-scripts/linux/resources/
 RUN make install DESTDIR=$APPDIR \
     && mkdir -p $APPDIR/usr/share/icons/hicolor/256x256/apps \
     && cp \
@@ -63,6 +83,7 @@ RUN make install DESTDIR=$APPDIR \
 RUN apt install -y \
     desktop-file-utils \
     fakeroot \
+    fuse \
     libgdk-pixbuf2.0-dev \
     patchelf \
     python3-setuptools \
@@ -82,8 +103,19 @@ RUN apt install -y \
     && chmod +x /usr/local/bin/linuxdeploy-plugin-qt \
     && python3 -m pip install appimage-builder
 
+
 # ## actually run appimage-builder now
-# ENV UPDATE_INFO=gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
+RUN mkdir -p /app/brewtarget/build-scripts/linux/
+ADD ./build-scripts/linux/AppImageBuilderDocker.yml /app/brewtarget/build-scripts/linux/
+WORKDIR /app
+ENV UPDATE_INFO=gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
 # RUN appimage-builder \
-#     --recipe=/app/brewtarget/build-scripts/linux/AppImageBuilder.yml \
+#     --appimage-extract-and-run \
+#     --recipe=/app/brewtarget/build-scripts/linux/AppImageBuilderDocker.yml \
 #     --skip-test
+RUN appimage-builder \
+    --recipe=/app/brewtarget/build-scripts/linux/AppImageBuilderDocker.yml \
+    --skip-appimage
+RUN appimagetool \
+    --appimage-extract-and-run \
+    /app/build/AppDir
