@@ -51,7 +51,7 @@ RUN cmake \
     -DCMAKE_PREFIX_PATH=/app/Qt/$QT_VERSION/gcc_64 \
     && make package
 
-ENV APPDIR=/app/AppDir
+ENV APPDIR=/app/build/AppDir
 ## install the app & apply app image hacks
 RUN make install DESTDIR=$APPDIR \
     && mkdir -p $APPDIR/usr/share/icons/hicolor/256x256/apps \
@@ -82,8 +82,8 @@ RUN apt install -y \
     && chmod +x /usr/local/bin/linuxdeploy-plugin-qt \
     && python3 -m pip install appimage-builder
 
-## actually run appimage-builder now
-ENV UPDATE_INFO=gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
-RUN appimage-builder \
-    --recipe=/app/brewtarget/build-scripts/linux/AppImageBuilder.yml \
-    --skip-test
+# ## actually run appimage-builder now
+# ENV UPDATE_INFO=gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
+# RUN appimage-builder \
+#     --recipe=/app/brewtarget/build-scripts/linux/AppImageBuilder.yml \
+#     --skip-test
