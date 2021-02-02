@@ -83,6 +83,7 @@ RUN apt install -y \
     && python3 -m pip install appimage-builder
 
 ## actually run appimage-builder now
+ENV UPDATE_INFO=gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
 RUN appimage-builder \
     --recipe=/app/brewtarget/build-scripts/linux/AppImageBuilder.yml \
     --skip-test
