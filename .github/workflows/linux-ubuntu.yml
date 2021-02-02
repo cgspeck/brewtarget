@@ -36,13 +36,18 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{github.workspace}}/build
+        env:
+          LD_LIBRARY_PATH: ${{ env.Qt5_DIR }}/lib
         run: |
           cmake \
             -DDO_RELEASE_BUILD=OFF \
+            -DCMAKE_PREFIX_PATH=$Qt5_DIR \
             $GITHUB_WORKSPACE
 
       - name: Build
         working-directory: ${{github.workspace}}/build
+        env:
+          LD_LIBRARY_PATH: ${{ env.Qt5_DIR }}/lib
         shell: bash
         run: |
           make package

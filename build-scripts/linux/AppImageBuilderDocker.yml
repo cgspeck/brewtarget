@@ -19,7 +19,6 @@ AppDir:
       - sourceline: deb http://archive.neon.kde.org/user/ bionic main
         key_url: "https://archive.neon.kde.org/public.key"
     include:
-      - env
       - libbz2-1.0
       - libc6
       - libcanberra-gtk-module
