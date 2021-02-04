@@ -18,6 +18,7 @@ jobs:
         uses: jurplel/install-qt-action@v2
         with:
           version: 5.14.2
+          extra: '-b http://ftp.jaist.ac.jp/pub/qtproject/'
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/build
@@ -42,37 +43,6 @@ jobs:
         with:
           name: brewtarget-linux-installers
           path: build/brewtarget*
-
-      # create an AppImage
-      # https://appimage-builder.readthedocs.io/en/latest/hosted-services/github-actions.html
-      - name: Install App
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: |
-          make install DESTDIR=AppDir
-
-
-      - name: Hacks to make AppImage Builder Happy
-        working-directory: ${{github.workspace}}
-        shell: bash
-        run: |
-          mkdir -p build/AppDir/usr/share/icons/hicolor/256x256/apps
-          cp build-scripts/linux/resources/brewtarget.png \
-            build/AppDir/usr/share/icons/hicolor/256x256/apps
-
-
-      - name: Build AppImage
-        uses: AppImageCrafters/build-appimage-action@master
-        env:
-          UPDATE_INFO: gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
-        with:
-          recipe: build-scripts/linux/AppImageBuilder.yml
-
-      - name: Upload Brewtarget AppImage
-        uses: actions/upload-artifact@v2
-        with:
-          name: brewtarget-appImage
-          path: Brewtarget-latest-x86_64.AppImage
 
       - name: Recover Debris Artifacts
         if: ${{ failure() }}
