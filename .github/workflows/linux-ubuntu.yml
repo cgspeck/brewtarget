@@ -1,15 +1,6 @@
 name: Linux
 
-on:
-  push:
-    branches:
-      - develop
-      - "stable/**"
-  pull_request:
-    branches:
-      - develop
-  schedule:
-    - cron: "0 2 * * *"
+on: [push]
 
 jobs:
   build:
