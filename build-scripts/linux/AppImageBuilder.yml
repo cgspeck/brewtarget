@@ -6,7 +6,7 @@ AppDir:
     name: Brewtarget
     icon: brewtarget
     version: latest
-    exec: usr/local/bin/brewtarget
+    exec: usr/bin/brewtarget
     exec_args: $@
   apt:
     arch: amd64
