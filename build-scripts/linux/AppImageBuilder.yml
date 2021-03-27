@@ -4,7 +4,7 @@ AppDir:
   app_info:
     id: brewtarget
     name: Brewtarget
-    icon: brewtarget
+    icon: brewtarget.png
     version: latest
     exec: usr/local/bin/brewtarget
     exec_args: $@
