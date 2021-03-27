@@ -91,18 +91,18 @@ jobs:
           name: brewtarget-appImage
           path: Brewtarget-latest-x86_64.AppImage
 
-      - name: Upload Brewtarget Installers
-        if: ${{ success() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: brewtarget-linux-installers
-          path: build/brewtarget*
-          retention-days: 7
+      # - name: Upload Brewtarget Installers
+      #   if: ${{ success() }}
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: brewtarget-linux-installers
+      #     path: build/brewtarget*
+      #     retention-days: 7
 
-      - name: Recover Debris Artifacts
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-results
-          path: build
-          retention-days: 1
+      # - name: Recover Debris Artifacts
+      #   if: ${{ failure() }}
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: build-results
+      #     path: build
+      #     retention-days: 1
