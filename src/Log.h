@@ -2,7 +2,7 @@
  * Log.h is part of Brewtarget, and is Copyright the following
  * authors 2009-2020
  * - Maxime Lavigne <duguigne@gmail.com>
- * - Mattias Måhl <mattias@kejsarsten.com>
+ * - Mattias Mï¿½hl <mattias@kejsarsten.com>
  *
  * Brewtarget is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

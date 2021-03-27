@@ -9,7 +9,7 @@
  * - Philip Greggory Lee <rocketman768@gmail.com>
  * - Rob Taylor <robtaylor@floopily.org>
  * - Ted Wright <unsure>
- * - Mattias Måhl <mattias@kejsarsten.com>
+ * - Mattias Mï¿½hl <mattias@kejsarsten.com>
  *
  * Brewtarget is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -637,6 +637,7 @@ int Brewtarget::run(const QString &userDirectory)
    }
    qDebug() << QString("Starting Brewtarget v%1 on %2.").arg(VERSIONSTRING).arg(QSysInfo::prettyProductName());
    _mainWindow = new MainWindow();
+   _mainWindow->init();
    _mainWindow->setVisible(true);
    splashScreen.finish(_mainWindow);
 
@@ -1477,8 +1478,8 @@ QPair<double,double> Brewtarget::displayRange(Ingredient* element, QObject *obje
    }
    else if ( _type != DENSITY )
    {
-      range.first  = amountDisplay(element, object, "colorMin_srm", Units::srm,0);
-      range.second = amountDisplay(element, object, "colorMax_srm", Units::srm,0);
+      range.first  = amountDisplay(element, object, PropertyNames::Style::colorMin_srm, Units::srm,0);
+      range.second = amountDisplay(element, object, PropertyNames::Style::colorMax_srm, Units::srm,0);
    }
    else
    {

@@ -115,7 +115,7 @@ public slots:
    void setFileLocationState(bool state);
 
 protected:
-   
+
    //! \brief Reimplemented from QWidget.
    virtual void changeEvent(QEvent* e);
 
