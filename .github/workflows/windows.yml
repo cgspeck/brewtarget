@@ -1,6 +1,15 @@
 name: Windows
 
-on: [push]
+on:
+  push:
+    branches:
+      - develop
+      - "stable/**"
+  pull_request:
+    branches:
+      - develop
+  schedule:
+    - cron: "0 2 * * *"
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -17,19 +26,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install NSISLog Plugin
-        shell: bash
-        working-directory: ${{github.workspace}}
+      - name: Download and install NSIS plugins
         run: |
-          cp \
-            build-scripts/windows/vendor/NSISlog/plugin/nsislog.dll \
-            "C:/Program Files (x86)/NSIS/Plugins/x86-ansi"
-          cp \
-            build-scripts/windows/vendor/NSISLocate/Plugin/locate.dll \
-            "C:/Program Files (x86)/NSIS/Plugins/x86-ansi"
-          cp \
-            build-scripts/windows/vendor/NSISLocate/Include/Locate.nsh \
-            "C:/Program Files (x86)/NSIS/Include"
+          New-Item -ItemType Directory -Force -Path .\temp\nsis_plugins
+          Invoke-WebRequest -Uri https://nsis.sourceforge.io/mediawiki/images/a/af/Locate.zip -OutFile .\temp\nsis_plugins\Locate.zip
+          Expand-Archive -Path .\temp\nsis_plugins\Locate.zip -DestinationPath .\temp\nsis_plugins\Locate
+          Copy-Item -Path ".\temp\nsis_plugins\Locate\Plugin\locate.dll" -Destination "C:\Program Files (x86)\NSIS\Plugins\x86-ansi"
+          Copy-Item -Path ".\temp\nsis_plugins\Locate\Include\Locate.nsh" -Destination "C:\Program Files (x86)\NSIS\Include"
+          Invoke-WebRequest -Uri https://nsis.sourceforge.io/mediawiki/images/7/76/Nsislog.zip -OutFile .\temp\nsis_plugins\Nsislog.zip
+          Expand-Archive -Path .\temp\nsis_plugins\Nsislog.zip -DestinationPath .\temp\nsis_plugins\Nsislog
+          Copy-Item -Path ".\temp\nsis_plugins\Nsislog\plugin\nsislog.dll" -Destination "C:\Program Files (x86)\NSIS\Plugins\x86-ansi"
 
       - name: Apply Patches
         shell: bash
@@ -41,7 +47,7 @@ jobs:
         with:
           arch: win64_mingw81
           version: 5.15.2
-          extra: '-b http://ftp.jaist.ac.jp/pub/qtproject/'
+          extra: "-b http://ftp.jaist.ac.jp/pub/qtproject/"
 
       - name: Create Build Environment
         # Some projects don't allow in-source building, so create a separate build directory
@@ -68,6 +74,18 @@ jobs:
         working-directory: ${{github.workspace}}/build
         shell: bash
         run: |
+          make
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: |
+          make test
+
+      - name: Package
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: |
           make package
 
       - name: Archive the installer
@@ -76,6 +94,7 @@ jobs:
         with:
           name: Brewtarget Windows Installer
           path: build/brewtarget_*.exe
+          retention-days: 7
 
       - name: Recover the debris
         if: ${{ failure() }}
@@ -83,4 +102,4 @@ jobs:
         with:
           name: build-results
           path: build
-          retention-days: 2
+          retention-days: 1
