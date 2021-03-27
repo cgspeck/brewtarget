@@ -87,6 +87,19 @@ jobs:
         shell: bash
         run: rpmlint *.rpm | less
 
+      - name: Build AppImage
+        uses: AppImageCrafters/build-appimage-action@master
+        env:
+          UPDATE_INFO: gh-releases-zsync|cgspeck|brewtarget|latest|*x86_64.AppImage.zsync
+        with:
+          recipe: build-scripts/linux/AppImageBuilder.yml
+
+      - name: Upload Brewtarget AppImage
+        uses: actions/upload-artifact@v2
+        with:
+          name: brewtarget-appImage
+          path: Brewtarget-latest-x86_64.AppImage
+
       - name: Upload Brewtarget Installers
         if: ${{ success() }}
         uses: actions/upload-artifact@v2
