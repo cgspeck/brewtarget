@@ -603,7 +603,7 @@ IF( NOT ${BUILD_DESIGNER_PLUGINS} )
                COMPONENT ${DATA_INSTALL_COMPONENT} )
 
       INSTALL( FILES ${brewtarget_ICONS_256}
-               DESTINATION "${DATAROOTDIR}/icons/hicolor/256x256/apps/"
+               DESTINATION "${DATAROOTDIR}/icons/"
                COMPONENT ${DATA_INSTALL_COMPONENT}
       )
 
