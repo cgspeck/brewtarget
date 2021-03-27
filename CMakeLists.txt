@@ -311,6 +311,10 @@ SET( brewtarget_ICONS
      ${ROOTDIR}/images/brewtarget.svg
 )
 
+SET( brewtarget_ICONS_256
+     ${ROOTDIR}/images/brewtarget.png
+)
+
 SET( TRANSLATIONS_FILES
      ${TRANSLATIONSDIR}/bt_ca.ts # Catalan
      ${TRANSLATIONSDIR}/bt_cs.ts # Czech
@@ -597,6 +601,11 @@ IF( NOT ${BUILD_DESIGNER_PLUGINS} )
       INSTALL( FILES ${brewtarget_ICONS}
                DESTINATION "${DATAROOTDIR}/icons/hicolor/scalable/apps/"
                COMPONENT ${DATA_INSTALL_COMPONENT} )
+
+      INSTALL( FILES ${brewtarget_ICONS_256}
+               DESTINATION "${DATAROOTDIR}/icons/hicolor/256x256/apps"
+               COMPONENT ${DATA_INSTALL_COMPONENT}
+      )
 
       # Install the .desktop file.
       INSTALL( FILES ${brewtarget_DESKTOP}
