@@ -1,6 +1,57 @@
 version: 1
+
+script:
+  # install QT
+  # don'use official installer - requires/forces a login
+  # - |
+  #   mkdir -p /brewtager/qt \
+  #   cd /brewtager/qt \
+  #   wget https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run \
+  #   chmod +x qt-unified-linux-x64-online.run \
+  #   qt-unified-linux-x64-online.run \
+  #     --platform minimal
+  - |
+    pip3 install aqtinstall
+    aqt \
+      install \
+      --outputdir /qt \
+      5.12.0 \
+      linux \
+      desktop
+
+  # dependencies for Brewtarget build
+  - |
+    apt-get install -y \
+      cmake \
+      libgl-dev \
+      rpm
+
+  # build the app
+  - |
+    export PATH=/qt/5.12.0/gcc_64/bin/:$PATH
+    export QT_PLUGIN_PATH=/qt/5.12.0/gcc_64/plugins/
+    export QML_IMPORT_PATH=/qt/5.12.0/gcc_64/qml/
+    export QML2_IMPORT_PATH=/qt/5.12.0/gcc_64/qml/
+    mkdir -p /brewtarget/build
+    cd /brewtarget/build
+    umask 022
+    cmake \
+      -DDO_RELEASE_BUILD=ON \
+      -DNO_QTMULTIMEDIA=ON \
+      -DNO_MESSING_WITH_FLAGS=ON \
+      -DEXEC_PREFIX=/AppDir/usr \
+      /brewtarget/checkout
+    make
+    CTEST_OUTPUT_ON_FAILURE=TRUE \
+      QT_QPA_PLATFORM=minimal \
+      make test
+  # install the app
+  - |
+    cd /brewtarget/build
+    make install
+
 AppDir:
-  path: build/AppDir
+  path: /AppDir
   app_info:
     id: brewtarget
     name: Brewtarget
