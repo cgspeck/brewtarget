@@ -1,3 +1,9 @@
+#
+# src/CMakeLists.txt is part of Brewtarget
+#
+# See also ../CMakeLists.txt
+#
+
 # The current directory in the original source.
 INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} )
 # The current directory in the output build directory.
@@ -55,43 +61,43 @@ ENDMACRO(ADD_PCH_RULE _src_list _header_filename)
 SET( brewtarget_SRCS
     ${SRCDIR}/AboutDialog.cpp
     ${SRCDIR}/Algorithms.cpp
-    ${SRCDIR}/ingredient.cpp
+    ${SRCDIR}/BeerColorWidget.cpp
     ${SRCDIR}/beerxml.cpp
-    ${SRCDIR}/IngredientSortProxyModel.cpp
     ${SRCDIR}/boiltime.cpp
-    ${SRCDIR}/BrewDayWidget.cpp
     ${SRCDIR}/BrewDayScrollWidget.cpp
+    ${SRCDIR}/BrewDayWidget.cpp
     ${SRCDIR}/brewnote.cpp
     ${SRCDIR}/BrewNoteWidget.cpp
-    ${SRCDIR}/BtTabWidget.cpp
-    ${SRCDIR}/BtTreeItem.cpp
-    ${SRCDIR}/BtTreeModel.cpp
-    ${SRCDIR}/BtTreeView.cpp
-    ${SRCDIR}/BtTreeFilterProxyModel.cpp
-    ${SRCDIR}/BeerColorWidget.cpp
+    ${SRCDIR}/brewtarget.cpp
     ${SRCDIR}/BtDatePopup.cpp
+    ${SRCDIR}/BtDigitWidget.cpp
     ${SRCDIR}/BtFolder.cpp
     ${SRCDIR}/BtLabel.cpp
     ${SRCDIR}/BtLineEdit.cpp
-    ${SRCDIR}/BtTextEdit.cpp
-    ${SRCDIR}/brewtarget.cpp
     ${SRCDIR}/BtSplashScreen.cpp
+    ${SRCDIR}/BtTabWidget.cpp
+    ${SRCDIR}/BtTextEdit.cpp
+    ${SRCDIR}/BtTreeFilterProxyModel.cpp
+    ${SRCDIR}/BtTreeItem.cpp
+    ${SRCDIR}/BtTreeModel.cpp
+    ${SRCDIR}/BtTreeView.cpp
     ${SRCDIR}/CelsiusTempUnitSystem.cpp
     ${SRCDIR}/ColorMethods.cpp
     ${SRCDIR}/ConverterTool.cpp
     ${SRCDIR}/CustomComboBox.cpp
     ${SRCDIR}/database.cpp
+    ${SRCDIR}/DatabaseSchema.cpp
     ${SRCDIR}/DatabaseSchemaHelper.cpp
     ${SRCDIR}/DiastaticPowerUnitSystem.cpp
-    ${SRCDIR}/equipment.cpp
     ${SRCDIR}/EbcColorUnitSystem.cpp
     ${SRCDIR}/EquipmentButton.cpp
-    ${SRCDIR}/EquipmentListModel.cpp
+    ${SRCDIR}/equipment.cpp
     ${SRCDIR}/EquipmentEditor.cpp
+    ${SRCDIR}/EquipmentListModel.cpp
     ${SRCDIR}/FahrenheitTempUnitSystem.cpp
     ${SRCDIR}/fermentable.cpp
-    ${SRCDIR}/FermentableEditor.cpp
     ${SRCDIR}/FermentableDialog.cpp
+    ${SRCDIR}/FermentableEditor.cpp
     ${SRCDIR}/FermentableSortFilterProxyModel.cpp
     ${SRCDIR}/FermentableTableModel.cpp
     ${SRCDIR}/HeatCalculations.cpp
@@ -102,16 +108,19 @@ SET( brewtarget_SRCS
     ${SRCDIR}/HopTableModel.cpp
     ${SRCDIR}/Html.cpp
     ${SRCDIR}/HydrometerTool.cpp
-    ${SRCDIR}/instruction.cpp
     ${SRCDIR}/IbuGuSlider.cpp
     ${SRCDIR}/IbuMethods.cpp
     ${SRCDIR}/ImperialVolumeUnitSystem.cpp
-    ${SRCDIR}/InventoryFormatter.cpp
+    ${SRCDIR}/model/NamedEntity.cpp
+    ${SRCDIR}/NamedEntitySortProxyModel.cpp
+    ${SRCDIR}/instruction.cpp
     ${SRCDIR}/InstructionWidget.cpp
+    ${SRCDIR}/InventoryFormatter.cpp
     ${SRCDIR}/Log.cpp
     ${SRCDIR}/MainWindow.cpp
-    ${SRCDIR}/mash.cpp
     ${SRCDIR}/MashButton.cpp
+    ${SRCDIR}/mash.cpp
+    ${SRCDIR}/MashDesigner.cpp
     ${SRCDIR}/MashEditor.cpp
     ${SRCDIR}/MashListModel.cpp
     ${SRCDIR}/mashstep.cpp
@@ -121,20 +130,23 @@ SET( brewtarget_SRCS
     ${SRCDIR}/MashWizard.cpp
     ${SRCDIR}/matrix.cpp
     ${SRCDIR}/misc.cpp
-    ${SRCDIR}/MiscEditor.cpp
     ${SRCDIR}/MiscDialog.cpp
+    ${SRCDIR}/MiscEditor.cpp
     ${SRCDIR}/MiscSortFilterProxyModel.cpp
     ${SRCDIR}/MiscTableModel.cpp
     ${SRCDIR}/NamedMashEditor.cpp
     ${SRCDIR}/OgAdjuster.cpp
     ${SRCDIR}/OptionDialog.cpp
+    ${SRCDIR}/PitchDialog.cpp
     ${SRCDIR}/PlatoDensityUnitSystem.cpp
     ${SRCDIR}/PreInstruction.cpp
     ${SRCDIR}/PrimingDialog.cpp
+    ${SRCDIR}/PropertySchema.cpp
     ${SRCDIR}/QueuedMethod.cpp
     ${SRCDIR}/RadarChart.cpp
     ${SRCDIR}/RangedSlider.cpp
     ${SRCDIR}/recipe.cpp
+    ${SRCDIR}/RecipeExtrasWidget.cpp
     ${SRCDIR}/RecipeFormatter.cpp
     ${SRCDIR}/RefractoDialog.cpp
     ${SRCDIR}/salt.cpp
@@ -146,12 +158,13 @@ SET( brewtarget_SRCS
     ${SRCDIR}/SIWeightUnitSystem.cpp
     ${SRCDIR}/SrmColorUnitSystem.cpp
     ${SRCDIR}/StrikeWaterDialog.cpp
-    ${SRCDIR}/style.cpp
     ${SRCDIR}/StyleButton.cpp
-    ${SRCDIR}/StyleListModel.cpp
+    ${SRCDIR}/style.cpp
     ${SRCDIR}/StyleEditor.cpp
+    ${SRCDIR}/StyleListModel.cpp
     ${SRCDIR}/StyleRangeWidget.cpp
     ${SRCDIR}/StyleSortFilterProxyModel.cpp
+    ${SRCDIR}/TableSchema.cpp
     ${SRCDIR}/TimerListDialog.cpp
     ${SRCDIR}/TimerMainDialog.cpp
     ${SRCDIR}/TimerWidget.cpp
@@ -161,26 +174,26 @@ SET( brewtarget_SRCS
     ${SRCDIR}/UnitSystems.cpp
     ${SRCDIR}/USVolumeUnitSystem.cpp
     ${SRCDIR}/USWeightUnitSystem.cpp
-    ${SRCDIR}/water.cpp
-    ${SRCDIR}/WaterTableModel.cpp
-    ${SRCDIR}/WaterListModel.cpp
-    ${SRCDIR}/WaterTableWidget.cpp
     ${SRCDIR}/WaterButton.cpp
-    ${SRCDIR}/WaterEditor.cpp
+    ${SRCDIR}/water.cpp
     ${SRCDIR}/WaterDialog.cpp
+    ${SRCDIR}/WaterEditor.cpp
+    ${SRCDIR}/WaterListModel.cpp
     ${SRCDIR}/WaterSortFilterProxyModel.cpp
+    ${SRCDIR}/WaterTableModel.cpp
+    ${SRCDIR}/WaterTableWidget.cpp
     ${SRCDIR}/yeast.cpp
     ${SRCDIR}/YeastDialog.cpp
     ${SRCDIR}/YeastEditor.cpp
-    ${SRCDIR}/YeastTableModel.cpp
     ${SRCDIR}/YeastSortFilterProxyModel.cpp
-    ${SRCDIR}/MashDesigner.cpp
-    ${SRCDIR}/BtDigitWidget.cpp
-    ${SRCDIR}/PitchDialog.cpp
-    ${SRCDIR}/RecipeExtrasWidget.cpp
-    ${SRCDIR}/PropertySchema.cpp
-    ${SRCDIR}/TableSchema.cpp
-    ${SRCDIR}/DatabaseSchema.cpp
+    ${SRCDIR}/YeastTableModel.cpp
+    ${SRCDIR}/xml/BtDomErrorHandler.cpp
+    ${SRCDIR}/xml/XercesHelpers.cpp
+    ${SRCDIR}/xml/XmlCoding.cpp
+    ${SRCDIR}/xml/XmlMashStepRecord.cpp
+    ${SRCDIR}/xml/XmlRecipeRecord.cpp
+    ${SRCDIR}/xml/XmlRecord.cpp
+    ${SRCDIR}/xml/XmlRecordCount.cpp
 )
 
 # List of all the *.ui.
@@ -223,7 +236,7 @@ SET( brewtarget_MOC_HEADERS
     ${SRCDIR}/BeerColorWidget.h
     ${SRCDIR}/ingredient.h
     ${SRCDIR}/beerxml.h
-    ${SRCDIR}/IngredientSortProxyModel.h
+    ${SRCDIR}/NamedEntitySortProxyModel.h
     ${SRCDIR}/boiltime.h
     ${SRCDIR}/BrewDayWidget.h
     ${SRCDIR}/BrewDayScrollWidget.h
@@ -459,6 +472,22 @@ IF( WIN32 AND MINGW )
    #    '-Wl,-subsystem,windows' supresses the output command window.
    #    '-Wl,-s' strips the executable of symbols.
    SET_TARGET_PROPERTIES( ${brewtarget_EXECUTABLE} PROPERTIES LINK_FLAGS "-Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -mthreads -Wl,-subsystem,windows")
+
+   if(TARGET Qt5::windeployqt)
+      # execute windeployqt in a tmp directory after build
+      add_custom_command(TARGET ${brewtarget_EXECUTABLE}
+         POST_BUILD
+         COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/windeployqt"
+         COMMAND Qt5::windeployqt --dir "${CMAKE_CURRENT_BINARY_DIR}/windeployqt" --no-translations --compiler-runtime "$<TARGET_FILE_DIR:${brewtarget_EXECUTABLE}>/$<TARGET_FILE_NAME:${brewtarget_EXECUTABLE}>"
+   )
+
+   # copy deployment directory during installation
+   install(
+      DIRECTORY
+      "${CMAKE_CURRENT_BINARY_DIR}/windeployqt/"
+      DESTINATION bin
+   )
+   endif()
 ENDIF()
 
 SET( QT5_USE_MODULES_LIST
@@ -475,7 +504,7 @@ IF( NOT ${NO_QTMULTIMEDIA})
    SET( QT5_USE_MODULES_LIST ${QT5_USE_MODULES_LIST} Qt5::Multimedia)
 ENDIF()
 
-target_link_libraries( ${QT5_USE_MODULES_LIST})
+target_link_libraries( ${QT5_USE_MODULES_LIST} ${XercesC_LIBRARIES} ${XalanC_LIBRARIES})
 
 #=================================Tests========================================
 
@@ -502,7 +531,7 @@ IF( NOT ${NO_QTMULTIMEDIA})
 SET( QT5_USE_MODULES_LIST ${QT5_USE_MODULES_LIST} Qt5::Multimedia)
 ENDIF()
 
-target_link_libraries(${QT5_USE_MODULES_LIST})
+target_link_libraries(${QT5_USE_MODULES_LIST} ${XercesC_LIBRARIES} ${XalanC_LIBRARIES})
 
 ADD_TEST(
    NAME pstdintTest
@@ -528,6 +557,30 @@ INSTALL( TARGETS ${brewtarget_EXECUTABLE}
          RUNTIME DESTINATION ${TARGETPATH}
          COMPONENT ${RUNTIME_INSTALL_COMPONENT} )
 
+IF( WIN32 )
+      install(CODE 
+      "
+         file(GET_RUNTIME_DEPENDENCIES 
+            RESOLVED_DEPENDENCIES_VAR deps 
+            UNRESOLVED_DEPENDENCIES_VAR confdeps
+            EXECUTABLES src/${brewtarget_EXECUTABLE}.exe
+            PRE_EXCLUDE_REGEXES \"^api-ms-win.*\$|^ext-ms.*\$\"
+            POST_EXCLUDE_REGEXES \".*system32.*\"
+            DIRECTORIES ${Mingw_Path}
+         )
+         #message(\"Installing: \${deps}\")
+         #message(\"Not found: \${confdeps}\")
+         FOREACH (fdep IN LISTS deps)
+            message( \"\${fdep}\" )
+            file( INSTALL
+               DESTINATION bin
+               TYPE SHARED_LIBRARY
+               FOLLOW_SYMLINK_CHAIN
+               FILES \"\${fdep}\")
+         ENDFOREACH()
+      ")
+   ENDIF()
+
 # Install the translations.
 INSTALL(FILES ${QM_FILES}
         DESTINATION "${DATAPATH}/translations_qm"
@@ -544,4 +597,3 @@ IF( APPLE )
       DEPENDS ${brewtarget_EXECUTABLE}
    )
 ENDIF()
-

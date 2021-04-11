@@ -555,7 +555,7 @@ bool BtTreeModel::removeRows(int row, int count, const QModelIndex &parent)
 // =========================================================================
 
 // One find method for all things. This .. is nice
-QModelIndex BtTreeModel::findElement(Ingredient* thing, BtTreeItem* parent)
+QModelIndex BtTreeModel::findElement(NamedEntity* thing, BtTreeItem* parent)
 {
    BtTreeItem* pItem;
    QList<BtTreeItem*> folders;
@@ -592,41 +592,41 @@ QModelIndex BtTreeModel::findElement(Ingredient* thing, BtTreeItem* parent)
    return QModelIndex();
 }
 
-QList<Ingredient*> BtTreeModel::elements()
+QList<NamedEntity*> BtTreeModel::elements()
 {
-   QList<Ingredient*> elements;
+   QList<NamedEntity*> elements;
    switch(treeMask)
    {
    case RECIPEMASK:
-      foreach( Ingredient* elem, Database::instance().recipes() )
+      foreach( NamedEntity* elem, Database::instance().recipes() )
          elements.append(elem);
       break;
    case EQUIPMASK:
-      foreach( Ingredient* elem, Database::instance().equipments() )
+      foreach( NamedEntity* elem, Database::instance().equipments() )
          elements.append(elem);
       break;
    case FERMENTMASK:
-      foreach( Ingredient* elem, Database::instance().fermentables() )
+      foreach( NamedEntity* elem, Database::instance().fermentables() )
          elements.append(elem);
       break;
    case HOPMASK:
-      foreach( Ingredient* elem, Database::instance().hops() )
+      foreach( NamedEntity* elem, Database::instance().hops() )
          elements.append(elem);
       break;
    case MISCMASK:
-      foreach( Ingredient* elem, Database::instance().miscs() )
+      foreach( NamedEntity* elem, Database::instance().miscs() )
          elements.append(elem);
       break;
    case YEASTMASK:
-      foreach( Ingredient* elem, Database::instance().yeasts() )
+      foreach( NamedEntity* elem, Database::instance().yeasts() )
          elements.append(elem);
       break;
    case STYLEMASK:
-      foreach( Ingredient* elem, Database::instance().styles() )
+      foreach( NamedEntity* elem, Database::instance().styles() )
          elements.append(elem);
       break;
    case WATERMASK:
-      foreach( Ingredient* elem, Database::instance().waters() )
+      foreach( NamedEntity* elem, Database::instance().waters() )
          elements.append(elem);
       break;
    default:
@@ -641,9 +641,9 @@ void BtTreeModel::loadTreeModel()
 
    QModelIndex ndxLocal;
    BtTreeItem* local = nullptr;
-   QList<Ingredient*> elems = elements();
+   QList<NamedEntity*> elems = elements();
 
-   foreach( Ingredient* elem, elems ) {
+   foreach( NamedEntity* elem, elems ) {
 
       if (! elem->folder().isEmpty() ) {
          ndxLocal = findFolder( elem->folder(), rootItem->child(0), true );
@@ -745,7 +745,7 @@ Water* BtTreeModel::water(const QModelIndex &index) const
    return index.isValid() ? item(index)->water() : nullptr;
 }
 
-Ingredient* BtTreeModel::thing(const QModelIndex &index) const
+NamedEntity* BtTreeModel::thing(const QModelIndex &index) const
 {
    return index.isValid() ? item(index)->thing() : nullptr;
 }
@@ -838,7 +838,8 @@ void BtTreeModel::copySelected(QList< QPair<QModelIndex, QString> > toBeCopied)
          case BtTreeItem::FERMENTABLE:
             Fermentable *copyFerm, *oldFerm;
             oldFerm = fermentable(ndx);
-            copyFerm = Database::instance().newFermentable(oldFerm); // Create a deep copy.
+            // Create a deep copy with a new inventory row
+            copyFerm = Database::instance().newFermentable(oldFerm,true); 
             if ( copyFerm )
                copyFerm->setName(name);
             else
@@ -847,7 +848,8 @@ void BtTreeModel::copySelected(QList< QPair<QModelIndex, QString> > toBeCopied)
          case BtTreeItem::HOP:
             Hop *copyHop,  *oldHop;
             oldHop = hop(ndx);
-            copyHop = Database::instance().newHop(oldHop); // Create a deep copy.
+            // Create a deep copy with a new inventory row
+            copyHop = Database::instance().newHop(oldHop,true); 
             if ( copyHop )
                copyHop->setName(name);
             else
@@ -856,7 +858,8 @@ void BtTreeModel::copySelected(QList< QPair<QModelIndex, QString> > toBeCopied)
          case BtTreeItem::MISC:
             Misc *copyMisc, *oldMisc;
             oldMisc = misc(ndx);
-            copyMisc = Database::instance().newMisc(oldMisc); // Create a deep copy.
+            // Create a deep copy with a new inventory row
+            copyMisc = Database::instance().newMisc(oldMisc,true);
             if ( copyMisc )
                copyMisc->setName(name);
             else
@@ -883,7 +886,8 @@ void BtTreeModel::copySelected(QList< QPair<QModelIndex, QString> > toBeCopied)
          case BtTreeItem::YEAST:
             Yeast *copyYeast, *oldYeast;
             oldYeast = yeast(ndx);
-            copyYeast = Database::instance().newYeast(oldYeast); // Create a deep copy.
+            // Create a deep copy with a new inventory row
+            copyYeast = Database::instance().newYeast(oldYeast,true);
             if ( copyYeast )
                copyYeast->setName(name);
             else
@@ -968,7 +972,7 @@ void BtTreeModel::deleteSelected(QModelIndexList victims)
 //
 void BtTreeModel::folderChanged(QString name)
 {
-   Ingredient* test = qobject_cast<Ingredient*>(sender());
+   NamedEntity* test = qobject_cast<NamedEntity*>(sender());
    QModelIndex ndx, pIndex;
    bool expand = true;
 
@@ -1274,7 +1278,7 @@ QModelIndex BtTreeModel::findFolder( QString name, BtTreeItem* parent, bool crea
 
 void BtTreeModel::elementChanged()
 {
-   Ingredient* d = qobject_cast<Ingredient*>(sender());
+   NamedEntity* d = qobject_cast<NamedEntity*>(sender());
    if( !d )
       return;
 
@@ -1291,18 +1295,18 @@ void BtTreeModel::elementChanged()
  * liners is required to give the right signature and to be able to call
  * addElement() properly
  */
-void BtTreeModel::elementAdded(Recipe* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementAdded(Equipment* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementAdded(Fermentable* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementAdded(Hop* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementAdded(Misc* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementAdded(Style* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementAdded(Yeast* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementAdded(BrewNote* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementAdded(Water* victim) { elementAdded(qobject_cast<Ingredient*>(victim)); }
+void BtTreeModel::elementAdded(Recipe* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementAdded(Equipment* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementAdded(Fermentable* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementAdded(Hop* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementAdded(Misc* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementAdded(Style* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementAdded(Yeast* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementAdded(BrewNote* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementAdded(Water* victim) { elementAdded(qobject_cast<NamedEntity*>(victim)); }
 
 // I guess this isn't too bad. Better than this same function copied 7 times
-void BtTreeModel::elementAdded(Ingredient* victim)
+void BtTreeModel::elementAdded(NamedEntity* victim)
 {
    QModelIndex pIdx;
    int lType = _type;
@@ -1343,17 +1347,17 @@ void BtTreeModel::elementAdded(Ingredient* victim)
    observeElement(victim);
 }
 
-void BtTreeModel::elementRemoved(Recipe* victim)      { elementRemoved(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementRemoved(Equipment* victim)   { elementRemoved(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementRemoved(Fermentable* victim) { elementRemoved(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementRemoved(Hop* victim)         { elementRemoved(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementRemoved(Misc* victim)        { elementRemoved(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementRemoved(Style* victim)       { elementRemoved(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementRemoved(Yeast* victim)       { elementRemoved(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementRemoved(BrewNote* victim)    { elementRemoved(qobject_cast<Ingredient*>(victim)); }
-void BtTreeModel::elementRemoved(Water* victim)       { elementRemoved(qobject_cast<Ingredient*>(victim)); }
+void BtTreeModel::elementRemoved(Recipe* victim)      { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementRemoved(Equipment* victim)   { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementRemoved(Fermentable* victim) { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementRemoved(Hop* victim)         { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementRemoved(Misc* victim)        { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementRemoved(Style* victim)       { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementRemoved(Yeast* victim)       { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementRemoved(BrewNote* victim)    { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
+void BtTreeModel::elementRemoved(Water* victim)       { elementRemoved(qobject_cast<NamedEntity*>(victim)); }
 
-void BtTreeModel::elementRemoved(Ingredient* victim)
+void BtTreeModel::elementRemoved(NamedEntity* victim)
 {
    QModelIndex index,pIndex;
 
@@ -1374,7 +1378,7 @@ void BtTreeModel::elementRemoved(Ingredient* victim)
    disconnect( victim, nullptr, this, nullptr );
 }
 
-void BtTreeModel::observeElement(Ingredient* d)
+void BtTreeModel::observeElement(NamedEntity* d)
 {
    if ( ! d )
       return;
@@ -1419,7 +1423,7 @@ bool BtTreeModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
       target = folder(parent)->fullPath();
    else
    {
-      Ingredient* _thing = thing(parent);
+      NamedEntity* _thing = thing(parent);
 
       // Did you know there's a space between elements in a tree, and you can
       // actually drop things there? If somebody drops something there, don't
@@ -1435,7 +1439,7 @@ bool BtTreeModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
    {
       QString text;
       stream >> oType >> id >> name;
-      Ingredient* elem = nullptr;
+      NamedEntity* elem = nullptr;
       switch(oType)
       {
          case BtTreeItem::RECIPE:
